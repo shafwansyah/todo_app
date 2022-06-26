@@ -1,18 +1,19 @@
 class UsersModel {
-  int? id;
-  String? username;
-  String? password;
+  String email;
+  String password;
 
-  UsersModel({this.username, this.password});
+  UsersModel({required this.email, required this.password});
 
   factory UsersModel.fromJSON(Map<String, dynamic> json) {
-    return UsersModel(username: json['username'], password: json['password']);
+    return UsersModel(email: json['email'], password: json['password']);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'username': username,
+    var map = <String, dynamic>{
+      'email': email,
       'password': password,
     };
+
+    return map;
   }
 }

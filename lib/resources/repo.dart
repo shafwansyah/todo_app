@@ -1,8 +1,8 @@
-import 'package:todo_app/database/DBController.dart';
+import 'package:todo_app/database/TodoController.dart';
 import 'package:todo_app/model/todoModel.dart';
 
 class Repo {
-  final DBController _dbController = DBController();
+  final TodoController _dbController = TodoController();
 
   Future getAllTodos() => _dbController.getAllTodos();
   Future insertTodo(todoModel todo) => _dbController.createTODO(todo);

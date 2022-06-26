@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/api/notification_api.dart';
 import 'package:todo_app/blocs/todo_bloc.dart';
 import 'package:todo_app/model/todoModel.dart';
 
@@ -16,80 +17,86 @@ class _AddTaskState extends State<AddTask> {
   DateTime dueDate = DateTime.now();
   String? expire;
 
-  dateToString(date) {
-    setState(() {
-      expire = dateFormat.format(date);
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        const SizedBox(
-          height: 10.0,
-        ),
-        TextField(
-          decoration: const InputDecoration(
-            hintText: "Enter Task",
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 10.0,
           ),
-          onChanged: (value) {
-            setState(() {
-              taskName = value;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 25.0,
-        ),
-        TextField(
-          decoration: const InputDecoration(
-            hintText: "Due Task",
-          ),
-          onChanged: (value) {
-            setState(() {
-              expire = value;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 25.0,
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            DateTime? newDate = await showDatePicker(
-                context: context,
-                initialDate: dueDate,
-                firstDate: DateTime(1900),
-                lastDate: DateTime(2100));
-
-            if (newDate == null) return;
-            setState(() => dueDate = newDate);
-          },
-          child: Text('Select Date'),
-        ),
-        const SizedBox(
-          height: 25.0,
-        ),
-        MaterialButton(
-            child: Container(
-              width: 200.0,
-              height: 50.0,
-              color: Colors.deepPurpleAccent,
-              child: const Center(
-                child: Text("add"),
-              ),
+          TextField(
+            decoration: const InputDecoration(
+              hintText: "Enter Task",
             ),
-            onPressed: () {
-              todoBloc.addTodo(todoModel(
-                desc: taskName,
-                due_date: dateFormat.format(dueDate),
-                is_done: false,
-              ));
+            onChanged: (value) {
+              setState(() {
+                taskName = value;
+              });
+            },
+          ),
+          const SizedBox(
+            height: 25.0,
+          ),
+          Text(expire ?? 'Pick Date'),
+          const SizedBox(
+            height: 25.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    DateTime? newDate = await showDatePicker(
+                        context: context,
+                        initialDate: dueDate,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100));
 
-              Navigator.pop(context);
-            }),
-      ],
+                    if (newDate == null) return;
+                    setState(() {
+                      dueDate = newDate;
+                      expire = dateFormat.format(dueDate);
+                    });
+                  },
+                  child: Text('Select Date'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green,
+                  ),
+                  onPressed: () {
+                    todoBloc.addTodo(todoModel(
+                      desc: taskName,
+                      due_date: dateFormat.format(dueDate),
+                      is_done: false,
+                    ));
+
+                    Navigator.pop(context);
+                  },
+                  child: Text('Add Task'),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
