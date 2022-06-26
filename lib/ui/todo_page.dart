@@ -22,11 +22,11 @@ class _TodoListPageState extends State<TodoListPage> {
     // TODO: implement initState
     super.initState();
 
-    NotificationApi.showScheduledNotification(
-      title: "Do Your Task",
-      body: desc,
-      scheduledDate: DateTime.now().add(Duration(seconds: 12)),
-    );
+    // NotificationApi.showScheduledNotification(
+    //   title: "Do Your Task",
+    //   body: desc ?? 'Dont Forget Your Task',
+    //   scheduledDate: DateTime.now().add(const Duration(seconds: 12)),
+    // );
 
     NotificationApi.init(initSchedule: true);
     listenNotifications();
@@ -58,13 +58,19 @@ class _TodoListPageState extends State<TodoListPage> {
               itemBuilder: (context, index) {
                 return ListTile(
                     title: Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                  margin: EdgeInsets.symmetric(
+                    vertical: 10.0,
+                  ),
                   padding: EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: (DateTime.tryParse(
+                                snapshot.data![index].due_date.toString()) ==
+                            DateTime.now())
+                        ? Colors.orange
+                        : Colors.blue,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(

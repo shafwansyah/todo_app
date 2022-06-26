@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/ui/login_page.dart';
 import 'package:todo_app/ui/register_page.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() {
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:toast/toast.dart';
 import 'package:todo_app/api/notification_api.dart';
 import 'package:todo_app/blocs/todo_bloc.dart';
 import 'package:todo_app/model/todoModel.dart';
@@ -12,7 +13,7 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  String? taskName;
+  late String taskName;
   DateFormat dateFormat = DateFormat('yyyy-MM-dd');
   DateTime dueDate = DateTime.now();
   String? expire;
@@ -82,11 +83,22 @@ class _AddTaskState extends State<AddTask> {
                     primary: Colors.green,
                   ),
                   onPressed: () {
+                    // if (dueDate == DateTime.now()) {
+                    //   Toast.show("at least choose tomorrow",
+                    //       duration: Toast.lengthLong, gravity: Toast.bottom);
+                    // }
                     todoBloc.addTodo(todoModel(
                       desc: taskName,
                       due_date: dateFormat.format(dueDate),
                       is_done: false,
                     ));
+
+                    NotificationApi.showScheduledNotification(
+                      title: "Do Your Task",
+                      body: taskName,
+                      scheduledDate:
+                          DateTime.now().add(const Duration(seconds: 12)),
+                    );
 
                     Navigator.pop(context);
                   },

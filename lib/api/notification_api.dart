@@ -26,9 +26,9 @@ class NotificationApi {
 
     // when app closed
     final details = await _notifications.getNotificationAppLaunchDetails();
-    if (details != null && details.didNotificationLaunchApp) {
-      onNotifications.add(details.payload);
-    }
+    // if (details != null && details.didNotificationLaunchApp) {
+    //   onNotifications.add(details.payload);
+    // }
 
     await _notifications.initialize(setting,
         onSelectNotification: ((payload) async {}));
